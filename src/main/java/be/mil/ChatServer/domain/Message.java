@@ -1,4 +1,4 @@
-package be.mil.ChatServer;
+package be.mil.ChatServer.domain;
 
 /**
  * Created by benoit on 30/11/2016.
@@ -6,14 +6,14 @@ package be.mil.ChatServer;
 public class Message implements Comparable<Message> {
 
     private int id;
-    private  String chatRoom;
+    private String chatRoom;
     private String body;
     private Chatter chatterFrom;
 
     public Message(String body, Chatter chatterFrom, String chatRoom) {
         this.body = body;
         this.chatterFrom = chatterFrom;
-        this.chatRoom=chatRoom;
+        this.chatRoom = chatRoom;
     }
 
     public Message(String body, Chatter chatter1) {
@@ -27,7 +27,6 @@ public class Message implements Comparable<Message> {
     public void setId(int id) {
         this.id = id;
     }
-
 
 
     public String getBody() {
@@ -53,7 +52,6 @@ public class Message implements Comparable<Message> {
     public void setChatRoom(String chatRoom) {
         this.chatRoom = chatRoom;
     }
-
 
 
     @Override

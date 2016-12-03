@@ -1,22 +1,20 @@
-package be.mil.ChatServer;
+package be.mil.ChatServer.domain;
 
 import java.util.*;
 
 /**
  * Created by benoit on 01/12/2016.
  */
-public  abstract  class ChatRoom {
+public abstract class ChatRoom {
 
+    protected final Set<Chatter> chatterList = new HashSet<Chatter>();
     private int id;
+    private String name;
+    private Set<Message> messages = new TreeSet<Message>();
 
     public ChatRoom(String name) {
         this.name = name;
     }
-
-    private String name;
-    protected final Set<Chatter> chatterList=new HashSet<Chatter>();
-    private Set<Message> messages=new TreeSet<Message>();
-
 
     public int getId() {
         return id;
@@ -26,9 +24,9 @@ public  abstract  class ChatRoom {
         this.id = id;
     }
 
-    public boolean addMessage(Message message){
+    public boolean addMessage(Message message) {
         messages.add(message);
-      //  chatterList.add(message.getChatter());
+        //  chatterList.add(message.getChatter());
         return true;
     }
 
@@ -52,7 +50,7 @@ public  abstract  class ChatRoom {
         chatterList.add(chatter);
     }
 
-    public void removeChatter(Chatter chatter){
+    public void removeChatter(Chatter chatter) {
         chatterList.remove(chatter);
     }
 
@@ -67,14 +65,14 @@ public  abstract  class ChatRoom {
     }
 
     public boolean isSubscribed(Chatter chatter) {
-        if(chatterList.contains(chatter)){
-           return true;
+        if (chatterList.contains(chatter)) {
+            return true;
         }
         return false;
     }
 
     public List<Message> getMessages() {
 
-        return new ArrayList<>( messages);
+        return new ArrayList<>(messages);
     }
 }

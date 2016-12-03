@@ -1,4 +1,4 @@
-package be.mil.ChatServer;
+package be.mil.ChatServer.domain;
 
 /**
  * Created by benoit on 30/11/2016.
