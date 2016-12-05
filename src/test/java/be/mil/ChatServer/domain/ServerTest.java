@@ -4,12 +4,18 @@ import be.mil.ChatServer.domain.ChatroomNotFound;
 import be.mil.ChatServer.domain.Chatter;
 import be.mil.ChatServer.domain.Message;
 import be.mil.ChatServer.domain.Server;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 
 /**
  * Created by benoit on 02/12/2016.
  */
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class ServerTest {
 
     private Server server;

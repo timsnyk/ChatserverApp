@@ -2,12 +2,14 @@ package be.mil.ChatServer.domain;
 
 
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
 /**
  * Created by benoit on 01/12/2016.
  */
+@Component
 public class Server {
 
     private final List<Chatter> chatterList = new ArrayList<Chatter>();

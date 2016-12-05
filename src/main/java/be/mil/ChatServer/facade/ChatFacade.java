@@ -2,20 +2,31 @@ package be.mil.ChatServer.facade;
 
 import be.mil.ChatServer.domain.*;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Created by benoit on 01/12/2016.
  */
+@Service
 public final  class ChatFacade {
+
+
+    @PostConstruct
+    public void test(){
+        System.out.println("test");
+    }
 
     private static ChatFacade chatFacade=new ChatFacade();
 
     private ChatFacade(){}
 
-    private final Server server = new Server();
+    @Autowired
+    private  Server server;
 
 
     public List<Chatter> getOnlineChatters() {
