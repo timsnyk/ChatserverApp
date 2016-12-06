@@ -16,60 +16,89 @@
 package be.mil.ChatServer.netty.server;
 
 
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import java.net.InetSocketAddress;
-import java.nio.channels.Channel;
-
-
-/**
- * Main Server
- *
- * @author Jibeom Jung
- */
 @Component
 public class TCPServer {
 
     @Autowired
-    @Qualifier("serverBootstrap")
-    private ServerBootstrap serverBootstrap;
-
-    @Autowired
-    @Qualifier("tcpSocketAddress")
-    private InetSocketAddress tcpPort;
+    private ServerAdapterInitializer serverAdapterInitializer;
 
 
-    private io.netty.channel.Channel serverChannel;
 
-    public void start() throws Exception {
-        serverChannel =  serverBootstrap.bind(tcpPort).sync().channel().closeFuture().sync().channel();
+
+    private int port = 5252;
+    private String server = "127.0.0.1";
+    private io.netty.channel.Channel channel;
+
+    public TCPServer() {
+
     }
 
-    @PreDestroy
-    public void stop() throws Exception {
-        System.out.println(serverChannel);
-        serverChannel.close();
-        serverChannel.parent().close();
+    public static void main(String[] args) {
+        new TCPServer().start();
     }
 
-    public ServerBootstrap getServerBootstrap() {
-        return serverBootstrap;
+
+    public void sendMessage() {
+
+
     }
 
-    public void setServerBootstrap(ServerBootstrap serverBootstrap) {
-        this.serverBootstrap = serverBootstrap;
+
+    public void start() {
+
+        EventLoopGroup producer = new NioEventLoopGroup();
+        EventLoopGroup consumer = new NioEventLoopGroup();
+
+        try {
+             Bootstrap bootstrapClient = new Bootstrap().group(new NioEventLoopGroup())
+                    .channel(NioSocketChannel.class)
+                    .handler(new ClientAdapterInitializer());
+
+
+            ServerBootstrap bootstrap = new ServerBootstrap()
+                    .group(producer, consumer)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(serverAdapterInitializer);
+            System.out.println("Server started");
+            bootstrap.bind(port).sync().channel().closeFuture().sync();
+            try {
+                channel = bootstrapClient.connect(server, port).sync().channel();
+
+
+                try {
+
+
+                    channel.write("Hi\n");
+                    channel.write("Hi\n");
+                    channel.flush();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+
+                    bootstrap.group().shutdownGracefully();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            producer.shutdownGracefully();
+            consumer.shutdownGracefully();
+        }
+
     }
 
-    public InetSocketAddress getTcpPort() {
-        return tcpPort;
-    }
-
-    public void setTcpPort(InetSocketAddress tcpPort) {
-        this.tcpPort = tcpPort;
-    }
 }

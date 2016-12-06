@@ -28,6 +28,7 @@ public class Starter {
         TCPServer tcpServer = context.getBean(TCPServer.class);
         try {
             tcpServer.start();
+         //   tcpServer.sendMessage();
         } catch (Exception e) {
             e.printStackTrace();
         }
